@@ -123,7 +123,7 @@ A **Full Stack Software Engineer** who designs, builds and ships production web 
 
 ### 📊 GitHub Stats
 <div align="center">
-  <img src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=hammad-shabbirx&theme=tokyonight" alt="GitHub Stats" height="195" />
+  <img src="https://raw.githubusercontent.com/hammad-shabbirx/hammad-shabbirx/output/github-stats.svg" alt="GitHub Stats" height="195" />
   <img src="https://streak-stats.demolab.com/?user=hammad-shabbirx&theme=tokyonight&hide_border=true" alt="GitHub Streak" height="195" />
 </div>
 

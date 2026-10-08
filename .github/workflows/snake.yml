@@ -1,4 +1,4 @@
-name: Generate contribution snake
+name: Generate profile cards
 
 on:
   schedule:
@@ -15,6 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
+      - uses: actions/checkout@v4
+
       - name: Generate snake SVGs from the contribution graph
         uses: Platane/snk@v3
         with:
@@ -22,6 +24,19 @@ jobs:
           outputs: |
             dist/github-contribution-grid-snake.svg
             dist/github-contribution-grid-snake-dark.svg?palette=github-dark
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Add a personal access token as the repository secret STATS_TOKEN
+      # (classic token, scopes: repo + read:user) to include private and
+      # organization repositories in the per-type counts.
+      - name: Generate stats card (includes private contributions)
+        run: node .github/scripts/stats-card.mjs dist/github-stats.svg
+        env:
+          GH_TOKEN: ${{ secrets.STATS_TOKEN || secrets.GITHUB_TOKEN }}
+          GH_USER: ${{ github.repository_owner }}
 
       - name: Publish to the output branch
         uses: crazy-max/ghaction-github-pages@v4
