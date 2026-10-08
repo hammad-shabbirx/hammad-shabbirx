@@ -19,6 +19,10 @@ const token = process.env.GH_TOKEN;
 const login = process.env.GH_USER;
 const out = process.argv[2] || "dist/github-stats.svg";
 if (!token || !login) throw new Error("GH_TOKEN and GH_USER are required");
+process.on("uncaughtException", (e) => {
+  console.log(`::error title=stats-card::${String(e.message).slice(0, 400)}`);
+  process.exit(1);
+});
 
 async function gql(query, variables) {
   const res = await fetch("https://api.github.com/graphql", {
@@ -37,12 +41,33 @@ async function gql(query, variables) {
   return json.data;
 }
 
+// Each query is independent: a field the token may not read is logged and
+// skipped, so a card is always produced.
+async function tryGql(label, query, variables) {
+  try {
+    return await gql(query, variables);
+  } catch (error) {
+    console.log(`::warning title=stats-card::${label} failed: ${error.message.slice(0, 300)}`);
+    return null;
+  }
+}
+
 const base = await gql(
   `query($login: String!) {
     user(login: $login) {
       name
       createdAt
       contributionsCollection { contributionYears }
+    }
+  }`,
+  { login },
+);
+const user = base.user;
+
+const reposData = await tryGql(
+  "repositoriesContributedTo",
+  `query($login: String!) {
+    user(login: $login) {
       repositoriesContributedTo(
         first: 1
         includeUserRepositories: true
@@ -52,13 +77,14 @@ const base = await gql(
   }`,
   { login },
 );
+const reposCount = reposData?.user?.repositoriesContributedTo?.totalCount ?? null;
 
-const user = base.user;
 const totals = { contributions: 0, commits: 0, prs: 0, reviews: 0, issues: 0, restricted: 0 };
 for (const year of user.contributionsCollection.contributionYears) {
   const from = `${year}-01-01T00:00:00Z`;
   const to = `${year}-12-31T23:59:59Z`;
-  const { user: y } = await gql(
+  const data = await tryGql(
+    `contributions ${year}`,
     `query($login: String!, $from: DateTime!, $to: DateTime!) {
       user(login: $login) {
         contributionsCollection(from: $from, to: $to) {
@@ -73,7 +99,8 @@ for (const year of user.contributionsCollection.contributionYears) {
     }`,
     { login, from, to },
   );
-  const c = y.contributionsCollection;
+  const c = data?.user?.contributionsCollection;
+  if (!c) continue;
   totals.contributions += c.contributionCalendar.totalContributions;
   totals.commits += c.totalCommitContributions;
   totals.prs += c.totalPullRequestContributions;
@@ -91,8 +118,8 @@ const rows = [
   ["Pull Requests", totals.prs],
   ["Code Reviews", totals.reviews],
   ["Issues", totals.issues],
-  ["Repos Contributed To", user.repositoriesContributedTo.totalCount],
 ];
+if (reposCount !== null) rows.push(["Repos Contributed To", reposCount]);
 // Without a personal token, private work is only available as a total.
 if (totals.restricted > 0) rows.push(["Private Contributions", totals.restricted]);
 
@@ -136,4 +163,4 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="495" height="${heigh
 
 await mkdir(dirname(out), { recursive: true });
 await writeFile(out, svg);
-console.log(`Wrote ${out}`, totals, "repos:", user.repositoriesContributedTo.totalCount);
+console.log(`Wrote ${out}`, totals, "repos:", reposCount);
