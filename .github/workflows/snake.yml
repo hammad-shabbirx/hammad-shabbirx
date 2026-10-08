@@ -25,6 +25,10 @@ jobs:
             dist/github-contribution-grid-snake.svg
             dist/github-contribution-grid-snake-dark.svg?palette=github-dark
 
+      # The snake action runs in Docker as root; hand dist/ back to the runner user.
+      - name: Fix dist ownership
+        run: sudo chown -R "$(id -u):$(id -g)" dist
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
