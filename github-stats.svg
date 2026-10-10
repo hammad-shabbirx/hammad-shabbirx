@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="495" height="236" viewBox="0 0 495 236" role="img" aria-label="Hammad's GitHub stats">
+  <style>
+    .title { font: 600 19px 'Segoe UI', Ubuntu, sans-serif; fill: #70a5fd; }
+    .label { font: 600 14px 'Segoe UI', Ubuntu, sans-serif; fill: #38bdae; }
+    .value { font: 700 14px 'Segoe UI', Ubuntu, sans-serif; fill: #c0caf5; }
+    .big { font: 800 30px 'Segoe UI', Ubuntu, sans-serif; fill: #70a5fd; }
+    .small { font: 600 12px 'Segoe UI', Ubuntu, sans-serif; fill: #38bdae; }
+    .muted { font: 400 11px 'Segoe UI', Ubuntu, sans-serif; fill: #8b93b8; }
+  </style>
+  <rect x="0.5" y="0.5" width="494" height="235" rx="6" fill="#1a1b27" />
+  <text x="25" y="38" class="title">Hammad's GitHub Stats</text>
+  
+    <g transform="translate(25, 66)">
+      <circle cx="6" cy="-5" r="4.5" fill="#bf91f3" />
+      <text x="20" y="0" class="label">Commits:</text>
+      <text x="215" y="0" class="value">3</text>
+    </g>
+    <g transform="translate(25, 92)">
+      <circle cx="6" cy="-5" r="4.5" fill="#bf91f3" />
+      <text x="20" y="0" class="label">Pull Requests:</text>
+      <text x="215" y="0" class="value">0</text>
+    </g>
+    <g transform="translate(25, 118)">
+      <circle cx="6" cy="-5" r="4.5" fill="#bf91f3" />
+      <text x="20" y="0" class="label">Code Reviews:</text>
+      <text x="215" y="0" class="value">0</text>
+    </g>
+    <g transform="translate(25, 144)">
+      <circle cx="6" cy="-5" r="4.5" fill="#bf91f3" />
+      <text x="20" y="0" class="label">Issues:</text>
+      <text x="215" y="0" class="value">0</text>
+    </g>
+    <g transform="translate(25, 170)">
+      <circle cx="6" cy="-5" r="4.5" fill="#bf91f3" />
+      <text x="20" y="0" class="label">Repos Contributed To:</text>
+      <text x="215" y="0" class="value">1</text>
+    </g>
+    <g transform="translate(25, 196)">
+      <circle cx="6" cy="-5" r="4.5" fill="#bf91f3" />
+      <text x="20" y="0" class="label">Private Contributions:</text>
+      <text x="215" y="0" class="value">627</text>
+    </g>
+  <g transform="translate(395, 110)">
+    <circle r="56" fill="none" stroke="#2a2e45" stroke-width="7" />
+    <circle r="56" fill="none" stroke="#bf91f3" stroke-width="7" stroke-linecap="round"
+      stroke-dasharray="300 352" transform="rotate(-90)" />
+    <text y="6" text-anchor="middle" class="big">632</text>
+    <text y="26" text-anchor="middle" class="small">contributions</text>
+    <text y="80" text-anchor="middle" class="muted">all time · since Jul 2026</text>
+  </g>
+</svg>
